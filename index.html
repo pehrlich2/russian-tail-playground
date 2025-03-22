@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Russian Tail Playground</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Russian Tail Playground v2</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,11 +19,21 @@
         }
         .chart-container {
             width: 100%;
-            height: 400px;
+            height: 450px;
+            position: relative;
+        }
+        .chart-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.5;
         }
         .controls {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
         }
         .control-group {
@@ -51,81 +61,108 @@
             margin-top: 0;
             color: #333;
         }
-        .real-votes {
+        .harris-votes {
             color: #2196F3;
         }
-        .fake-votes {
+        .trump-votes-1 {
             color: #F44336;
         }
-        .total-votes {
-            color: #4CAF50;
+        .trump-votes-2 {
+            color: #D32F2F;
+        }
+        .trump-total {
+            color: #B71C1C;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Russian Tail Playground</h1>
-        <p>This interactive visualization demonstrates how two bell curves (real and fake votes) can be detected in combined election results.</p>
+        <h1>Russian Tail Playground v2</h1>
+        <p>This interactive visualization demonstrates how multiple overlapping bell curves can reveal patterns in election results.</p>
         
         <div class="chart-container">
+            <img src="backdrop.png" class="chart-background" alt="Background Image">
             <canvas id="bellCurveChart"></canvas>
         </div>
         
         <div class="controls">
-            <div class="control-group real-votes">
-                <h2>Bell Curve A: Real Votes</h2>
+            <div class="control-group harris-votes">
+                <h2>Harris Votes</h2>
                 <div class="control-row">
-                    <label for="realVisible">Visible:</label>
-                    <input type="checkbox" id="realVisible" checked>
+                    <label for="harrisVisible">Visible:</label>
+                    <input type="checkbox" id="harrisVisible" checked>
                 </div>
                 <div class="control-row">
-                    <label for="realAmplitude">Amplitude:</label>
-                    <input type="range" id="realAmplitude" min="0" max="0.5" step="0.01" value="0.3">
-                    <span class="value" id="realAmplitudeValue">0.3</span>
+                    <label for="harrisAmplitude">Amplitude:</label>
+                    <input type="range" id="harrisAmplitude" min="0" max="0.5" step="0.01" value="0.3">
+                    <span class="value" id="harrisAmplitudeValue">0.3</span>
                 </div>
                 <div class="control-row">
-                    <label for="realWidth">Width (σ):</label>
-                    <input type="range" id="realWidth" min="0.1" max="5" step="0.1" value="1.5">
-                    <span class="value" id="realWidthValue">1.5</span>
+                    <label for="harrisWidth">Width (σ):</label>
+                    <input type="range" id="harrisWidth" min="0.1" max="5" step="0.1" value="1.5">
+                    <span class="value" id="harrisWidthValue">1.5</span>
                 </div>
                 <div class="control-row">
-                    <label for="realCenter">Center (μ):</label>
-                    <input type="range" id="realCenter" min="0" max="20" step="0.1" value="8">
-                    <span class="value" id="realCenterValue">8</span>
+                    <label for="harrisCenter">Center (μ):</label>
+                    <input type="range" id="harrisCenter" min="0" max="20" step="0.1" value="8">
+                    <span class="value" id="harrisCenterValue">8</span>
                 </div>
             </div>
             
-            <div class="control-group fake-votes">
-                <h2>Bell Curve B: Fake Votes</h2>
+            <div class="control-group trump-votes-1">
+                <h2>Trump Votes (Set 1)</h2>
                 <div class="control-row">
-                    <label for="fakeVisible">Visible:</label>
-                    <input type="checkbox" id="fakeVisible" checked>
+                    <label for="trump1Visible">Visible:</label>
+                    <input type="checkbox" id="trump1Visible" checked>
                 </div>
                 <div class="control-row">
-                    <label for="fakeAmplitude">Amplitude:</label>
-                    <input type="range" id="fakeAmplitude" min="0" max="0.5" step="0.01" value="0.1">
-                    <span class="value" id="fakeAmplitudeValue">0.1</span>
+                    <label for="trump1Amplitude">Amplitude:</label>
+                    <input type="range" id="trump1Amplitude" min="0" max="0.5" step="0.01" value="0.2">
+                    <span class="value" id="trump1AmplitudeValue">0.2</span>
                 </div>
                 <div class="control-row">
-                    <label for="fakeWidth">Width (σ):</label>
-                    <input type="range" id="fakeWidth" min="0.1" max="5" step="0.1" value="1.2">
-                    <span class="value" id="fakeWidthValue">1.2</span>
+                    <label for="trump1Width">Width (σ):</label>
+                    <input type="range" id="trump1Width" min="0.1" max="5" step="0.1" value="1.2">
+                    <span class="value" id="trump1WidthValue">1.2</span>
                 </div>
                 <div class="control-row">
-                    <label for="fakeCenter">Center (μ):</label>
-                    <input type="range" id="fakeCenter" min="0" max="20" step="0.1" value="11">
-                    <span class="value" id="fakeCenterValue">11</span>
+                    <label for="trump1Center">Center (μ):</label>
+                    <input type="range" id="trump1Center" min="0" max="20" step="0.1" value="10">
+                    <span class="value" id="trump1CenterValue">10</span>
+                </div>
+            </div>
+            
+            <div class="control-group trump-votes-2">
+                <h2>Trump Votes (Set 2)</h2>
+                <div class="control-row">
+                    <label for="trump2Visible">Visible:</label>
+                    <input type="checkbox" id="trump2Visible" checked>
+                </div>
+                <div class="control-row">
+                    <label for="trump2Amplitude">Amplitude:</label>
+                    <input type="range" id="trump2Amplitude" min="0" max="0.5" step="0.01" value="0.1">
+                    <span class="value" id="trump2AmplitudeValue">0.1</span>
+                </div>
+                <div class="control-row">
+                    <label for="trump2Width">Width (σ):</label>
+                    <input type="range" id="trump2Width" min="0.1" max="5" step="0.1" value="0.8">
+                    <span class="value" id="trump2WidthValue">0.8</span>
+                </div>
+                <div class="control-row">
+                    <label for="trump2Center">Center (μ):</label>
+                    <input type="range" id="trump2Center" min="0" max="20" step="0.1" value="12">
+                    <span class="value" id="trump2CenterValue">12</span>
                 </div>
             </div>
         </div>
         
         <div class="explanation">
-            <h2>About the Russian Tail</h2>
-            <p>The "Russian Tail" refers to an anomaly in election data where the combined distribution shows a telltale pattern of two overlapping bell curves - one representing genuine votes and another representing potentially fraudulent votes.</p>
-            <p>In this playground, you can adjust the parameters of both distributions to see how they appear when combined. By default, the fake votes are positioned to the right of the real votes (at μ=11 vs μ=8), with 1/4 the amplitude.</p>
+            <h2>About This Visualization</h2>
+            <p>This visualization shows three bell curves: one blue curve representing Harris votes, and two red curves representing different Trump vote distributions, along with their combined total (solid red).</p>
+            <p>The transparent background allows this chart to be overlaid on external images for presentation purposes. Place a "backdrop.png" file in the same directory to see it under the chart.</p>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script-v2.js"></script>
 </body>
 </html> 
