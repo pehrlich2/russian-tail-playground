@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russian Tail Playground</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .chart-container {
+            width: 100%;
+            height: 400px;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .control-group {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .control-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .control-row label {
+            flex: 1;
+        }
+        .control-row input {
+            flex: 2;
+            margin-right: 5px;
+        }
+        .control-row .value {
+            flex: 0.5;
+            min-width: 50px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .real-votes {
+            color: #2196F3;
+        }
+        .fake-votes {
+            color: #F44336;
+        }
+        .total-votes {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Russian Tail Playground</h1>
+        <p>This interactive visualization demonstrates how two bell curves (real and fake votes) can be detected in combined election results.</p>
+        
+        <div class="chart-container">
+            <canvas id="bellCurveChart"></canvas>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group real-votes">
+                <h2>Bell Curve A: Real Votes</h2>
+                <div class="control-row">
+                    <label for="realVisible">Visible:</label>
+                    <input type="checkbox" id="realVisible" checked>
+                </div>
+                <div class="control-row">
+                    <label for="realAmplitude">Amplitude:</label>
+                    <input type="range" id="realAmplitude" min="0" max="0.5" step="0.01" value="0.3">
+                    <span class="value" id="realAmplitudeValue">0.3</span>
+                </div>
+                <div class="control-row">
+                    <label for="realWidth">Width (σ):</label>
+                    <input type="range" id="realWidth" min="0.1" max="5" step="0.1" value="1.5">
+                    <span class="value" id="realWidthValue">1.5</span>
+                </div>
+                <div class="control-row">
+                    <label for="realCenter">Center (μ):</label>
+                    <input type="range" id="realCenter" min="0" max="20" step="0.1" value="8">
+                    <span class="value" id="realCenterValue">8</span>
+                </div>
+            </div>
+            
+            <div class="control-group fake-votes">
+                <h2>Bell Curve B: Fake Votes</h2>
+                <div class="control-row">
+                    <label for="fakeVisible">Visible:</label>
+                    <input type="checkbox" id="fakeVisible" checked>
+                </div>
+                <div class="control-row">
+                    <label for="fakeAmplitude">Amplitude:</label>
+                    <input type="range" id="fakeAmplitude" min="0" max="0.5" step="0.01" value="0.1">
+                    <span class="value" id="fakeAmplitudeValue">0.1</span>
+                </div>
+                <div class="control-row">
+                    <label for="fakeWidth">Width (σ):</label>
+                    <input type="range" id="fakeWidth" min="0.1" max="5" step="0.1" value="1.2">
+                    <span class="value" id="fakeWidthValue">1.2</span>
+                </div>
+                <div class="control-row">
+                    <label for="fakeCenter">Center (μ):</label>
+                    <input type="range" id="fakeCenter" min="0" max="20" step="0.1" value="11">
+                    <span class="value" id="fakeCenterValue">11</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="explanation">
+            <h2>About the Russian Tail</h2>
+            <p>The "Russian Tail" refers to an anomaly in election data where the combined distribution shows a telltale pattern of two overlapping bell curves - one representing genuine votes and another representing potentially fraudulent votes.</p>
+            <p>In this playground, you can adjust the parameters of both distributions to see how they appear when combined. By default, the fake votes are positioned to the right of the real votes (at μ=11 vs μ=8), with 1/4 the amplitude.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
