@@ -22,27 +22,29 @@ let chartConfig = {
         datasets: [
             {
                 label: 'Real Votes',
-                borderColor: '#2196F3',
+                borderColor: 'rgba(33, 150, 243, 0.7)',  // 50% opacity blue
                 backgroundColor: 'rgba(33, 150, 243, 0.1)',
                 borderWidth: 2,
                 pointRadius: 0,
                 fill: false,
                 tension: 0.4,
+                borderDash: [5, 5],  // Dashed line
                 data: []
             },
             {
                 label: 'Fake Votes',
-                borderColor: '#F44336',
+                borderColor: 'rgba(244, 67, 54, 0.7)',  // 50% opacity red
                 backgroundColor: 'rgba(244, 67, 54, 0.1)',
                 borderWidth: 2,
                 pointRadius: 0,
                 fill: false,
                 tension: 0.4,
+                borderDash: [5, 5],  // Dashed line
                 data: []
             },
             {
                 label: 'Total Votes',
-                borderColor: '#4CAF50',
+                borderColor: '#4CAF50',  // Solid green
                 backgroundColor: 'rgba(76, 175, 80, 0.1)',
                 borderWidth: 3,
                 pointRadius: 0,
